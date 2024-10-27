@@ -1,0 +1,25 @@
+cmake_minimum_required(VERSION 3.5.0)
+project(tetris VERSION 0.1.0 LANGUAGES C CXX)
+
+include(FetchContent)
+
+FetchContent_Declare(
+  fmt
+  GIT_REPOSITORY https://github.com/fmtlib/fmt.git
+  GIT_TAG 10.1.1 
+)
+  
+FetchContent_Declare(
+  raylib
+  GIT_REPOSITORY https://github.com/raysan5/raylib.git
+)
+    
+FetchContent_MakeAvailable(fmt raylib)
+
+add_executable(tetris main.cpp)
+
+include(CTest)
+enable_testing()
+
+# Link both fmt and raylib libraries to the target
+target_link_libraries(tetris PRIVATE fmt::fmt raylib)
