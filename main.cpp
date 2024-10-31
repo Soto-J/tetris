@@ -164,7 +164,7 @@ class Game {
     }
 
     if (IsKeyPressed(KEY_LEFT)) {
-      this->tetris.shiftTetrominoRight();
+      this->tetris.shiftTetrominoLeft();
     }
   }
 };
