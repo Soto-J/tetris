@@ -19,8 +19,8 @@ FetchContent_Declare(
 )
     
 FetchContent_MakeAvailable(fmt raylib)
-
-add_executable(tetris main.cpp)
+set(SOURCE_FILES main.cpp game/Game.cpp game/Game.h game/Tetris.cpp game/Tetris.h)
+add_executable(tetris ${SOURCE_FILES})
 
 include(CTest)
 enable_testing()
