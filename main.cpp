@@ -68,7 +68,7 @@ class Tetris {
 
   void shiftTetrominoLeft() {
     for (Vector2 &tetromino : this->getTetrominoCoordinates()) {
-      tetromino.y += 1;
+      tetromino.x -= 1;
     }
   }
 
