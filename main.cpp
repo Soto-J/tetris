@@ -148,6 +148,7 @@ class Tetris {
 class Game {
  public:
   Tetris tetris;
+  bool gameOver{false};
 
   void draw() {
     this->tetris.draw();
@@ -158,6 +159,13 @@ class Game {
   }
 
   void userInput() {
+    if (IsKeyPressed(KEY_RIGHT)) {
+      this->tetris.shiftTetrominoRight();
+    }
+
+    if (IsKeyPressed(KEY_LEFT)) {
+      this->tetris.shiftTetrominoRight();
+    }
   }
 };
 
@@ -185,6 +193,8 @@ int main(int, char **) {
     if (eventTriggered(0.4)) {
       game.update();
     }
+
+    game.userInput();
 
     DrawText("Tetris Game!!!!", SCREEN_SIZE / 2, 200, 20, LIGHTGRAY);
     ClearBackground(BLACK);
