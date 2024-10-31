@@ -63,14 +63,12 @@ class Tetris {
   void shiftTetrominoRight() {
     for (Vector2 &tetromino : this->getTetrominoCoordinates()) {
       tetromino.x += 1;
-      tetromino.y += 1;
     }
   }
 
   void shiftTetrominoLeft() {
     for (Vector2 &tetromino : this->getTetrominoCoordinates()) {
-      tetromino.x -= 1;
-      tetromino.y -= 1;
+      tetromino.y += 1;
     }
   }
 
