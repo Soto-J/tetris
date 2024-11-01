@@ -16,10 +16,20 @@ FetchContent_Declare(
 FetchContent_Declare(
   raylib
   GIT_REPOSITORY https://github.com/raysan5/raylib.git
+  GIT_TAG 4.5.0
 )
     
 FetchContent_MakeAvailable(fmt raylib)
-set(SOURCE_FILES main.cpp game/Game.cpp game/Game.h game/Tetris.cpp game/Tetris.h)
+
+set(
+  SOURCE_FILES 
+    main.cpp 
+    game/Game.cpp 
+    game/Game.h 
+    game/Tetris.cpp 
+    game/Tetris.h
+)
+
 add_executable(tetris ${SOURCE_FILES})
 
 include(CTest)
