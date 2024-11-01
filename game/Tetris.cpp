@@ -20,8 +20,8 @@ void Tetris::draw() {
 
 bool Tetris::isEligible() {
     auto vector2s = this->getTetrominoCoordinates();
-    for (auto i = vector2s.begin(); i != vector2s.end(); i++) {
-        if(i->y+1 > bottom()) {
+    for (auto &vector2 : vector2s) {
+        if(vector2.y+1 > bottom()) {
             return false;
         }
     }
