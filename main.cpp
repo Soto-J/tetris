@@ -3,7 +3,6 @@
 #include "raylib.h"
 #include "game/Game.h"
 
-
 double previousTime = 0;
 
 bool eventTriggered(double interval) {
