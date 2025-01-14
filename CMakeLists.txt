@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5.0)
+cmake_minimum_required(VERSION 3.15.0)
 project(tetris VERSION 0.1.0 LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 17)           # Use C++17
@@ -25,9 +25,9 @@ set(
   SOURCE_FILES 
     main.cpp 
     game/Game.cpp 
-    game/Game.h 
+    game/Game.hpp
     game/Tetris.cpp 
-    game/Tetris.h
+    game/Tetris.hpp
 )
 
 add_executable(tetris ${SOURCE_FILES})

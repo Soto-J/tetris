@@ -1,138 +1,153 @@
-//
-// Created by charl on 10/31/2024.
-//
-
-#include "Tetris.h"
+#include "Tetris.hpp"
 
 Tetris::Tetris() {
-    this->currentTetromino = this->getRandomTetromino();
-    this->previewTetromino = this->getRandomTetromino();
+  this->currentTetromino = this->getRandomTetromino();
+  this->previewTetromino = this->getRandomTetromino();
 }
-
 
 void Tetris::draw() {
-    DrawRectangle(1 * CELL_SIZE, 1 * CELL_SIZE, 15 * CELL_SIZE, 23 * CELL_SIZE, YELLOW); // Background
-    DrawRectangle(18 * CELL_SIZE, 1 * CELL_SIZE, 6 * CELL_SIZE, 8 * CELL_SIZE, YELLOW); // Preview
-    this->drawPreviewTetromino();
-    this->drawTetromino();
+  DrawRectangle(  // Game Viewport
+      GAME_VIEW_X * CELL_SIZE,
+      GAME_VIEW_Y * CELL_SIZE,
+      GAME_VIEW_WIDTH * CELL_SIZE,
+      GAME_VIEW_HEIGHT * CELL_SIZE,
+      YELLOW);
+
+  DrawRectangle(  // Preview Viewport
+      PREVIEW_VIEW_X * CELL_SIZE,
+      PREVIEW_VIEW_Y * CELL_SIZE,
+      PREVIEW_VIEW_HEIGHT * CELL_SIZE,
+      PREVIEW_VIEW_WIDTH * CELL_SIZE,
+      YELLOW);
+
+  this->drawTetromino();
+  this->drawPreviewTetromino();
 }
 
-
-bool Tetris::isEligible() {
-    auto vector2s = this->getTetrominoCoordinates();
-    for (auto &vector2 : vector2s) {
-        if(vector2.y+1 > bottom()) {
-            return false;
-        }
-    }
-    //How can we calculate where the lowest point a tetris model can go?+
-    return true;
-}
 void Tetris::update() {
-    if(this->isEligible()) {
-        for (Vector2 &tetromino: this->getTetrominoCoordinates()) {
-            if (tetromino.y < this->bottom()) {
-                tetromino.y += 1;
-            } else {
-                break;
-            }
-        }
-    } else {
-        //TODO: Choose Next
-    }
+  this->shiftTetrominoDown();
 }
-
-int Tetris::bottom() {
-    return (SCREEN_SIZE - (CELL_SIZE * 3)) / CELL_SIZE;
-}
-
 
 void Tetris::rotateTetrominoRight() {
-    // TODO
-}
-
-void Tetris::shiftTetrominoRight() {
-    for (Vector2 &tetromino: this->getTetrominoCoordinates()) {
-        tetromino.x += 1;
-        //tetromino.y += 1;
-    }
+  // TODO
 }
 
 void Tetris::shiftTetrominoLeft() {
-    for (Vector2 &tetromino: this->getTetrominoCoordinates()) {
-        tetromino.x -= 1;
-        //tetromino.y -= 1;
+  auto &tetrominoCoords = this->getTetrominoCoordinates();
+
+  for (const Vector2 &tetromino : tetrominoCoords) {
+    if (tetromino.x < GAME_VIEW_X) {
+      return;
     }
+  }
+
+  for (Vector2 &tetromino : tetrominoCoords) {
+    tetromino.x -= 1;
+  }
+}
+
+void Tetris::shiftTetrominoRight() {
+  auto &tetrominoCoords = this->getTetrominoCoordinates();
+
+  for (const Vector2 &tetromino : tetrominoCoords) {
+    if (tetromino.x + 1 >= GAME_VIEW_WIDTH) {
+      std::cout << "Cannot move right" << std::endl;
+      return;
+    }
+  }
+
+  for (Vector2 &tetromino : tetrominoCoords) {
+    tetromino.x += 1;
+  }
 }
 
 void Tetris::shiftTetrominoDown() {
-    for (Vector2 &tetromino: this->getTetrominoCoordinates()) {
-        tetromino.y += 1;
+  auto &tetrominoCoords = this->getTetrominoCoordinates();
+
+  for (const Vector2 &tetromino : tetrominoCoords) {
+    if (tetromino.y + 1 >= GAME_VIEW_HEIGHT) {
+      std::cout << "Cannot move down" << std::endl;
+      return;
     }
+  }
+
+  for (Vector2 &tetromino : this->getTetrominoCoordinates()) {
+    tetromino.y += 1;
+  }
+}
+
+bool Tetris::isInbound() {
+  for (const Vector2 &tetromino : this->getTetrominoCoordinates()) {
+    if (tetromino.x - 1 < GAME_VIEW_X || tetromino.x + 1 >= GAME_VIEW_WIDTH || tetromino.y + 1 >= GAME_VIEW_HEIGHT) {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 pair<string, Tetromino> Tetris::getRandomTetromino() {
-    static std::random_device rd; // Seed for random number generation
-    static std::mt19937 gen(rd()); // Mersenne Twister RNG
+  static std::random_device rd;   // Seed for random number generation
+  static std::mt19937 gen(rd());  // Mersenne Twister RNG
 
-    // Select a random index
-    std::uniform_int_distribution<> dist(0, static_cast<int>(SHAPES2.size()) - 1);
+  // Select a random index
+  std::uniform_int_distribution<> dist(0, static_cast<int>(SHAPES2.size()) - 1);
 
-    // Access random element by iterating to the index
-    auto it = SHAPES2.begin();
-    std::advance(it, dist(gen));
+  // Access random element by iterating to the index
+  auto it = SHAPES2.begin();
+  std::advance(it, dist(gen));
 
-    return std::make_pair(it->first, it->second);
+  return std::make_pair(it->first, it->second);
 }
 
 // CURRENT Tetromino
 void Tetris::drawTetromino() {
-    for (Vector2 &coord: this->getTetrominoCoordinates()) {
-        int x = int((coord.x + 1) * CELL_SIZE);
-        int y = int((coord.y + 1) * CELL_SIZE);
+  for (Vector2 &coord : this->getTetrominoCoordinates()) {
+    int x = int((coord.x + 1) * CELL_SIZE);
+    int y = int((coord.y + 1) * CELL_SIZE);
 
-        DrawRectangle(x, y, CELL_SIZE, CELL_SIZE, this->getTetrominoColor());
-    }
+    DrawRectangle(x, y, CELL_SIZE, CELL_SIZE, this->getTetrominoColor());
+  }
 }
 
 string &Tetris::getTetrominoName() {
-    return this->currentTetromino.first;
+  return this->currentTetromino.first;
 }
 
 pair<string, Tetromino> &Tetris::getTetromino() {
-    return this->currentTetromino;
+  return this->currentTetromino;
 }
 
 array<Vector2, TETROMINO_SIZE> &Tetris::getTetrominoCoordinates() {
-    return this->currentTetromino.second.coordinates;
+  return this->currentTetromino.second.coordinates;
 }
 
 Color &Tetris::getTetrominoColor() {
-    return this->currentTetromino.second.color;
+  return this->currentTetromino.second.color;
 }
 
 // PREVIEW Tetromino
 void Tetris::drawPreviewTetromino() {
-    for (Vector2 &coord: this->getPreviewTetrominoCoordinates()) {
-        int x = int((coord.x + 19) * CELL_SIZE);
-        int y = int((coord.y + 4) * CELL_SIZE);
+  for (Vector2 &coord : this->getPreviewTetrominoCoordinates()) {
+    int x = int((coord.x + 19) * CELL_SIZE);
+    int y = int((coord.y + 4) * CELL_SIZE);
 
-        DrawRectangle(x, y, CELL_SIZE, CELL_SIZE, this->getPreviewTetrominoColor());
-    }
+    DrawRectangle(x, y, CELL_SIZE, CELL_SIZE, this->getPreviewTetrominoColor());
+  }
 }
 
 string &Tetris::getPreviewTetrominoName() {
-    return this->previewTetromino.first;
+  return this->previewTetromino.first;
 }
 
 pair<string, Tetromino> &Tetris::getPreviewTetromino() {
-    return this->previewTetromino;
+  return this->previewTetromino;
 }
 
 array<Vector2, TETROMINO_SIZE> &Tetris::getPreviewTetrominoCoordinates() {
-    return this->previewTetromino.second.coordinates;
+  return this->previewTetromino.second.coordinates;
 }
 
 Color &Tetris::getPreviewTetrominoColor() {
-    return this->previewTetromino.second.color;
+  return this->previewTetromino.second.color;
 }

@@ -1,7 +1,8 @@
 #include <iostream>
+
 #include "fmt/core.h"
+#include "game/Game.hpp"
 #include "raylib.h"
-#include "game/Game.h"
 
 double previousTime = 0;
 
