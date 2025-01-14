@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include "fmt/core.h"
-#include "game/Game.hpp"
+#include "game/Grid.hpp"
 #include "raylib.h"
 
 double previousTime = 0;
@@ -21,21 +21,21 @@ int main(int, char **) {
   InitWindow(SCREEN_SIZE, SCREEN_SIZE, "Retro Tetris");
   SetTargetFPS(60);
 
-  Game game;
+  Grid grid;
 
   while (!WindowShouldClose()) {
     BeginDrawing();
 
     if (eventTriggered(0.4)) {
-      game.update();
+      grid.update();
     }
 
-    game.userInput();
+    grid.userInput();
 
     DrawText("Tetris Game!!!!", SCREEN_SIZE / 2, 200, 20, LIGHTGRAY);
     ClearBackground(BLACK);
 
-    game.draw();
+    grid.draw();
 
     EndDrawing();
   }

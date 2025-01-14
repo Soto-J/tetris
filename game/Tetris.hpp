@@ -38,13 +38,26 @@ struct Tetromino {
 };
 
 const std::unordered_map<string, Tetromino> SHAPES2 = {
-    {"Orange Ricky", {ORANGE, {Vector2{1, 1}, Vector2{2, 1}, Vector2{3, 1}, Vector2{3, 0}}}},  // L
-    {"Blue Ricky", {BLUE, {Vector2{1, 0}, Vector2{1, 1}, Vector2{2, 1}, Vector2{3, 1}}}},      // L
-    {"Hero", {SKYBLUE, {Vector2{1, 0}, Vector2{2, 0}, Vector2{3, 0}, Vector2{4, 0}}}},         // |
-    {"TeeWee", {PURPLE, {Vector2{1, 1}, Vector2{2, 1}, Vector2{2, 0}, Vector2{3, 1}}}},        // T
-    {"Smash Boy", {YELLOW, {Vector2{1, 0}, Vector2{2, 0}, Vector2{1, 1}, Vector2{2, 1}}}},     // Block
-    {"Cleveland Z", {RED, {Vector2{1, 0}, Vector2{2, 0}, Vector2{2, 1}, Vector2{3, 1}}}},      // Z
-    {"Rhode Island Z", {GREEN, {Vector2{1, 1}, Vector2{2, 1}, Vector2{2, 0}, Vector2{3, 0}}}}  // Z
+    {"Orange Ricky",
+     {ORANGE,
+      {Vector2{1, 1}, Vector2{2, 1}, Vector2{3, 1}, Vector2{3, 0}}}},  // L
+    {"Blue Ricky",
+     {BLUE,
+      {Vector2{1, 0}, Vector2{1, 1}, Vector2{2, 1}, Vector2{3, 1}}}},  // L
+    {"Hero",
+     {SKYBLUE,
+      {Vector2{1, 0}, Vector2{2, 0}, Vector2{3, 0}, Vector2{4, 0}}}},  // |
+    {"TeeWee",
+     {PURPLE,
+      {Vector2{1, 1}, Vector2{2, 1}, Vector2{2, 0}, Vector2{3, 1}}}},  // T
+    {"Smash Boy",
+     {YELLOW,
+      {Vector2{1, 0}, Vector2{2, 0}, Vector2{1, 1}, Vector2{2, 1}}}},  // Block
+    {"Cleveland Z",
+     {RED, {Vector2{1, 0}, Vector2{2, 0}, Vector2{2, 1}, Vector2{3, 1}}}},  // Z
+    {"Rhode Island Z",
+     {GREEN,
+      {Vector2{1, 1}, Vector2{2, 1}, Vector2{2, 0}, Vector2{3, 0}}}}  // Z
 };
 
 class Tetris {
@@ -59,11 +72,11 @@ class Tetris {
 
   void rotateTetrominoRight();
 
-  void shiftTetrominoRight();
+  void shiftTetrominoLeft(int leftBound);
 
-  void shiftTetrominoLeft();
+  void shiftTetrominoRight(int rigthBound);
 
-  void shiftTetrominoDown();
+  void shiftTetrominoDown(int bottomBound);
 
  private:
   pair<string, Tetromino> currentTetromino;

@@ -24,8 +24,8 @@ FetchContent_MakeAvailable(fmt raylib)
 set(
   SOURCE_FILES 
     main.cpp 
-    game/Game.cpp 
-    game/Game.hpp
+    game/Grid.cpp 
+    game/Grid.hpp
     game/Tetris.cpp 
     game/Tetris.hpp
 )

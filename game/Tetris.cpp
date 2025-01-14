@@ -6,66 +6,19 @@ Tetris::Tetris() {
 }
 
 void Tetris::draw() {
-  DrawRectangle(  // Game Viewport
-      GAME_VIEW_X * CELL_SIZE,
-      GAME_VIEW_Y * CELL_SIZE,
-      GAME_VIEW_WIDTH * CELL_SIZE,
-      GAME_VIEW_HEIGHT * CELL_SIZE,
-      YELLOW);
-
-  DrawRectangle(  // Preview Viewport
-      PREVIEW_VIEW_X * CELL_SIZE,
-      PREVIEW_VIEW_Y * CELL_SIZE,
-      PREVIEW_VIEW_HEIGHT * CELL_SIZE,
-      PREVIEW_VIEW_WIDTH * CELL_SIZE,
-      YELLOW);
-
   this->drawTetromino();
   this->drawPreviewTetromino();
 }
 
-void Tetris::update() {
+void Tetris::update() { 
   this->shiftTetrominoDown();
-}
+ }
 
-void Tetris::rotateTetrominoRight() {
-  // TODO
-}
-
-void Tetris::shiftTetrominoLeft() {
+void Tetris::shiftTetrominoDown(int bottomBound) {
   auto &tetrominoCoords = this->getTetrominoCoordinates();
 
   for (const Vector2 &tetromino : tetrominoCoords) {
-    if (tetromino.x < GAME_VIEW_X) {
-      return;
-    }
-  }
-
-  for (Vector2 &tetromino : tetrominoCoords) {
-    tetromino.x -= 1;
-  }
-}
-
-void Tetris::shiftTetrominoRight() {
-  auto &tetrominoCoords = this->getTetrominoCoordinates();
-
-  for (const Vector2 &tetromino : tetrominoCoords) {
-    if (tetromino.x + 1 >= GAME_VIEW_WIDTH) {
-      std::cout << "Cannot move right" << std::endl;
-      return;
-    }
-  }
-
-  for (Vector2 &tetromino : tetrominoCoords) {
-    tetromino.x += 1;
-  }
-}
-
-void Tetris::shiftTetrominoDown() {
-  auto &tetrominoCoords = this->getTetrominoCoordinates();
-
-  for (const Vector2 &tetromino : tetrominoCoords) {
-    if (tetromino.y + 1 >= GAME_VIEW_HEIGHT) {
+    if (tetromino.y + 1 >= bottomBound) {
       std::cout << "Cannot move down" << std::endl;
       return;
     }
@@ -76,9 +29,43 @@ void Tetris::shiftTetrominoDown() {
   }
 }
 
+void Tetris::rotateTetrominoRight() {
+  // TODO
+}
+
+void Tetris::shiftTetrominoLeft(int leftBound) {
+  auto &tetrominoCoords = this->getTetrominoCoordinates();
+
+  for (const Vector2 &tetromino : tetrominoCoords) {
+    if (tetromino.x < leftBound) {
+      return;
+    }
+  }
+
+  for (Vector2 &tetromino : tetrominoCoords) {
+    tetromino.x -= 1;
+  }
+}
+
+void Tetris::shiftTetrominoRight(int rightBound) {
+  auto &tetrominoCoords = this->getTetrominoCoordinates();
+
+  for (const Vector2 &tetromino : tetrominoCoords) {
+    if (tetromino.x + 1 >= rightBound) {
+      std::cout << "Cannot move right" << std::endl;
+      return;
+    }
+  }
+
+  for (Vector2 &tetromino : tetrominoCoords) {
+    tetromino.x += 1;
+  }
+}
+
 bool Tetris::isInbound() {
   for (const Vector2 &tetromino : this->getTetrominoCoordinates()) {
-    if (tetromino.x - 1 < GAME_VIEW_X || tetromino.x + 1 >= GAME_VIEW_WIDTH || tetromino.y + 1 >= GAME_VIEW_HEIGHT) {
+    if (tetromino.x - 1 < GAME_VIEW_X || tetromino.x + 1 >= GAME_VIEW_WIDTH ||
+        tetromino.y + 1 >= GAME_VIEW_HEIGHT) {
       return false;
     }
   }
@@ -110,9 +97,7 @@ void Tetris::drawTetromino() {
   }
 }
 
-string &Tetris::getTetrominoName() {
-  return this->currentTetromino.first;
-}
+string &Tetris::getTetrominoName() { return this->currentTetromino.first; }
 
 pair<string, Tetromino> &Tetris::getTetromino() {
   return this->currentTetromino;
